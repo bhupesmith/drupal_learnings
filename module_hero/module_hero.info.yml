@@ -1,0 +1,4 @@
+name: "Module Hero"
+description: "Its a development module creted during development."
+type: "module"
+core: "8.x"

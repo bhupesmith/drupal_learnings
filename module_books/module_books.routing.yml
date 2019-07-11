@@ -1,0 +1,15 @@
+module_books.my_books:
+  path: '/mybooks'
+  defaults:
+    _controller: '\Drupal\module_books\Controller\BooksController::myBooks'
+    _title: 'List of test books'
+  requirements:
+    _permission: 'access content'
+
+module_books.mymodule_config:
+  path: '/admin/mymodule/config'
+  defaults:
+    _form:  '\Drupal\module_books\Form\BooksConfigForm'
+    _title: 'My Module Config(Books)'
+  requirements:
+    _permission: 'administer content'

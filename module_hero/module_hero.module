@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Implementing our hooks.
+ **/ 
+
+/** Implments hook_theme() **/
+
+function module_hero_theme($existing, $type, $theme, $path){
+
+    return [
+        'hero_list' => [
+            'variables' => ['items'=>[], 'title'=> '' ]
+        ]
+    ];
+}
+/**
+ * Implementing hook_form_alter.
+ *
+ **/
+function module_hero_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+   
+
+    if('node_article_form' === $form_id){
+
+    //  $form['field_tags']['#access'] = FALSE; // Hide any field. 
+     $form['title']['widget'][0]['value']['#title'] = t('Article Title');
+     //kint($form);die;
+     $form['#validate'][] = '_module_hero_form_article_validate';
+    }
+    return $form;
+
+}
+
+function _module_hero_form_article_validate(&$form, $form_state){
+    if( is_numeric( $form_state->getValue('title')[0]['value'] ) ){
+        $form_state->setErrorByName('title', t('The Article title should not be number'));
+    }
+}
+/**
+ * Implementing hook_entity_presave.
+ *
+ **/
+function module_hero_entity_presave(Drupal\Core\Entity\EntityInterface $entity){
+  if( $entity->bundle() == 'article' ){
+      drupal_set_message('We are pre saving our article with name "'. $entity->get('title')->getValue()[0]['value']. '"');
+  }
+  // kint($entity); die; 
+}

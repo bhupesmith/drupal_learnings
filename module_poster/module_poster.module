@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Implementing the hooks.
+ */
+
+/**
+ * Need to implement the hook_theme()
+ */
+
+function module_poster_theme(){
+   return [
+       'poster_list' => [
+           'variables' => [ 'posters' => [], 'title' => '' ]
+       ]
+   ];
+}

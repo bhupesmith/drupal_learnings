@@ -1,0 +1,7 @@
+module_poster.posters:
+  path: '/posters'
+  defaults:
+    _controller: '\Drupal\module_poster\Controller\PosterController::posterList'
+    _title: 'Posters  list'
+  requirements:
+    _permission: 'access content'

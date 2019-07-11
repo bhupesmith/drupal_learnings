@@ -1,0 +1,51 @@
+id: migrate_csv_articles
+label: 'Migrate articles from the CSV file.'
+migration_group: migration_csv_custom
+source:
+  plugin: csv
+  path: 'modules/custom/migrate_customart/csv/articles.csv'
+  ids: [ID]
+  header_row_count: 1
+  keys: 
+    - ID
+  constants:
+    file_source_uri: 'modules/custom/migrate_customart/pictures'
+    file_dest_uri: 'public://images/'
+process:
+  file_source:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/file_source_uri
+        - Picture
+    -
+      plugin: urlencode
+  title: Title
+  body: Body
+  field_tags:
+    - 
+      plugin: explode
+      delimiter: ','
+      source: Tags
+    -
+      plugin: migration_lookup
+      migration: migrate_csv_tags
+      no_stub: true
+      source_ids: migrate_csv_tags 
+  uid:
+    -
+      plugin: author_id
+      source: Author
+  field_image:
+    -
+      plugin: image_import
+      source: '@file_source'
+      destination: constants/file_dest_uri
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+dependencies:
+  enforced:
+    module:
+      - migrate_customart

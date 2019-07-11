@@ -1,0 +1,13 @@
+id: mbooks
+label: M books migration
+description: My first migration
+source_type: Custom tables
+shared_configuration: 
+ source: 
+  key: default
+dependencies:
+  module:
+    - module_books
+  enforced:
+    module:
+      - module_books

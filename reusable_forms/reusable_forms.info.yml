@@ -1,0 +1,4 @@
+name: "Reusable form IB"
+description: "Reusable Form Plugin description"
+type: "module"
+core: "8.x"

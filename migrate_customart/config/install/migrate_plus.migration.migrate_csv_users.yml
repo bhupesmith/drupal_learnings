@@ -1,0 +1,32 @@
+id: migrate_csv_users
+label: 'Migrate users from csv file'
+migration_group: migration_csv_custom
+source:
+  plugin: csv
+  path: 'modules/custom/migrate_customart/csv/migrate_csv_users.csv'
+  ids: [ID]
+  header_row_count: 1
+  keys:
+    - name
+  constant:
+    status: 1
+process: 
+  name: Name
+  mail: Email
+  roles:
+    plugin: explode
+    delimiter: ','
+    source: Roles
+  field_first_name: Firstname
+  field_last_name: Lastname
+  status:  constant/status
+  pass:
+    plugin: callback
+    callable: md5
+    source: Password
+destination: 
+  plugin: 'entity:user'
+  md5_passwords: true
+migration_dependencies: 
+  required: { }
+  optional: { }

@@ -1,0 +1,4 @@
+name: "Demo article migration"
+description: "Article migration module demo."
+type: "module"
+core: "8.x"

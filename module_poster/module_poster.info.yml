@@ -1,0 +1,4 @@
+name: "Module Poster"
+description: "Module poster for learning Drupal module development"
+type: "module"
+core: "8.x"

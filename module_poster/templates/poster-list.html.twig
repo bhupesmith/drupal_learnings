@@ -1,0 +1,8 @@
+{{attach_library('module_poster/poster-style')}}
+{{title}}
+<ul>
+{% for item in posters %}
+    <li class="animated {{ random(['bounce','flash', 'rubberBand', 'shake', 'jello', 'tada', 'bounceIn']) }}">{{item}}</li>
+{% endfor %}
+</ul>
+<h2>My module poster list is working</h2>
