@@ -6,6 +6,8 @@
  * 
  **/
 
+use Drupal\Component\Serialization\Json;
+
 /**
  * Implementing hook_preprecess_block().
  * By Implementing this hook I will change the alt text of an image in a custom block type.
@@ -28,21 +30,18 @@
  * In this example I will fetch the response from an API and will update the information in a custom Block type.
  */
 
- function modify_block_cron(){
-     
-    // This is a silly example of a cron job.
-    // It just makes it obvious that the job has run without
-    // making any changes to your database.
-    \Drupal::logger('modify_block')
-      ->notice('cron_example ran');
-    if (\Drupal::state()
-      ->get('cron_example_show_status_message')) {
-      \Drupal::messenger()
-        ->addMessage(t('cron_example executed at %time', [
-        '%time' => date('c'),
-      ]));
-      \Drupal::state()
-        ->set('modify_block_show_status_message', FALSE);
+function modify_block_cron() {
+ $blocks = \Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(array('type' => 'stock_exchange_rate_card'));
+    foreach ($blocks as $block) {
+      $value = $block->field_symbol->value ;
+      $url = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol='.$value.'&callback=myFunction';
+      $response = \Drupal::httpClient()->get($url, array('headers' => array('Accept' => 'text/plain')));
+      $data = (string) $response->getBody();
+      $decoded_data = Json::decode($data);
+      $last_prise = $decoded_data['LastPrice'];
+      $change = $decoded_data['Change'];
+      $block->set('field_change', $change);
+      $block->set('field_last_price', $last_prise);
+      $block->save();
     }
-   
- }
+}
