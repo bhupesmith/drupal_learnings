@@ -1,0 +1,47 @@
+<?php
+/**
+ * @file
+ * Implementing our hooks.
+ * Demonstrate use of hook_preprecess_block API.
+ * 
+ **/
+
+/**
+ * Implementing hook_preprecess_block().
+ * By Implementing this hook I will change the alt text of an image in a custom block type.
+ **/
+ function modify_block_preprocess_block( &$variables ){
+    if($variables['attributes']['id'] === 'block-dogs-3'){
+        $field_image_values_old = $variables['content']['#block_content']->get('field_image')->getValue()[0];
+        $field_image_values_old['alt'] = 'Changed Dogs Alt';
+        $variables['content']['#block_content']->get('field_image')->setValue($field_image_values_old);
+    } 
+ }
+
+/**
+ * Implements hook_cron().
+ *
+ * Implementing hook_cron() to do background processing. It gets called every time the Drupal cron runs.
+ * We then decide what has to happen in response.
+ * 
+ * In this example I will fetch the response from an API and will update the information in a custom Block type.
+ */
+
+ function modify_block_cron(){
+     
+    // This is a silly example of a cron job.
+    // It just makes it obvious that the job has run without
+    // making any changes to your database.
+    \Drupal::logger('modify_block')
+      ->notice('cron_example ran');
+    if (\Drupal::state()
+      ->get('cron_example_show_status_message')) {
+      \Drupal::messenger()
+        ->addMessage(t('cron_example executed at %time', [
+        '%time' => date('c'),
+      ]));
+      \Drupal::state()
+        ->set('modify_block_show_status_message', FALSE);
+    }
+   
+ }

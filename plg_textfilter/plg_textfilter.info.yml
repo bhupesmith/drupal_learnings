@@ -1,0 +1,4 @@
+name: Text filter, auto convert to upper Using plugin
+description: Plugin Text filter convert the text to upper
+type: module
+core: 8.x
